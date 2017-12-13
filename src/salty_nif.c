@@ -428,7 +428,7 @@ ERL_NIF_TERM atom_primitive_sign;*/
 static int
 salty_onload(ErlNifEnv* env, void** priv_data, ERL_NIF_TERM load_info) {
     /* register the safe resource types for keys and private data */
-    
+
     /* cache atom values */
     atom_ok                  = enif_make_atom(env, "ok");
     atom_error               = enif_make_atom(env, "error");
@@ -1173,6 +1173,44 @@ SALTY_FUNC(core_hsalsa20, 3) DO
 
     SALTY_CALL(crypto_core_hsalsa20(out.data, in.data, key.data, con.data), out);
 END_OK_WITH(out);
+
+/**
+ * PWHASH Argon2i
+ */
+// SALTY_CONST_INT64(pwhash_argon2i_ALG_ARGON2I13);
+// SALTY_CONST_INT64(pwhash_argon2id_ALG_ARGON2ID13);
+// SALTY_CONST_INT64(pwhash_ALG_ARGON2ID13);
+// SALTY_CONST_INT64(pwhash_argon2id_BYTES_MIN);
+// SALTY_CONST_INT64(pwhash_argon2id_BYTES_MAX);
+SALTY_CONST_INT64(pwhash_argon2id_PASSWD_MIN);
+// SALTY_CONST_INT64(pwhash_argon2id_PASSWD_MAX);
+SALTY_CONST_INT64(pwhash_argon2id_SALTBYTES);
+// SALTY_CONST_INT64(pwhash_argon2id_STRBYTES);
+// SALTY_CONST_INT64(pwhash_argon2id_OPSLIMIT_MIN);
+// SALTY_CONST_INT64(pwhash_argon2id_OPSLIMIT_MAX);
+// SALTY_CONST_INT64(pwhash_argon2id_MEMLIMIT_MIN);
+// SALTY_CONST_INT64(pwhash_argon2id_MEMLIMIT_MAX);
+SALTY_CONST_INT64(pwhash_argon2id_OPSLIMIT_INTERACTIVE);
+SALTY_CONST_INT64(pwhash_argon2id_MEMLIMIT_INTERACTIVE);
+// SALTY_CONST_INT64(pwhash_argon2id_OPSLIMIT_MODERATE);
+// SALTY_CONST_INT64(pwhash_argon2id_MEMLIMIT_MODERATE);
+// SALTY_CONST_INT64(pwhash_argon2id_OPSLIMIT_SENSITIVE);
+// SALTY_CONST_INT64(pwhash_argon2id_MEMLIMIT_SENSITIVE);
+
+SALTY_FUNC(pwhash, 6) DO
+    SALTY_INPUT_UINT64(0, outlen);
+    SALTY_INPUT_BIN(1, password, crypto_pwhash_argon2id_PASSWD_MIN);
+    SALTY_INPUT_BIN(2, salt, crypto_pwhash_argon2id_SALTBYTES);
+    SALTY_INPUT_UINT64(3, opslimit);
+    SALTY_INPUT_UINT64(4, memlimit);
+    SALTY_INPUT_UINT64(5, alg);
+
+    SALTY_OUTPUT_BIN(hash, outlen);
+
+    SALTY_CALL(crypto_pwhash(
+        hash.data, outlen, (const char *) password.data, password.size, salt.data, opslimit, memlimit, alg),
+        hash);
+END_OK_WITH(hash);
 
 /**
  * GENERICHASH Blake2b
@@ -2030,7 +2068,7 @@ salty_exports[] = {
     SALTY_EXPORT_FUNC(aead_chacha20poly1305_encrypt, 5),
     SALTY_EXPORT_FUNC(aead_chacha20poly1305_encrypt_detached, 5),
     SALTY_EXPORT_FUNC(aead_chacha20poly1305_decrypt_detached, 6),
-    
+
     SALTY_EXPORT_CONS(aead_chacha20poly1305_ietf_KEYBYTES, 0),
     SALTY_EXPORT_CONS(aead_chacha20poly1305_ietf_NSECBYTES, 0),
     SALTY_EXPORT_CONS(aead_chacha20poly1305_ietf_NPUBBYTES, 0),
@@ -2114,6 +2152,12 @@ salty_exports[] = {
 
     SALTY_EXPORT_FUNC(core_hchacha20, 3),
     SALTY_EXPORT_FUNC(core_hsalsa20, 3),
+
+    SALTY_EXPORT_CONS(pwhash_argon2id_PASSWD_MIN, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2id_SALTBYTES, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2id_OPSLIMIT_INTERACTIVE, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2id_MEMLIMIT_INTERACTIVE, 0),
+    SALTY_EXPORT_FUNC(pwhash, 6),
 
     SALTY_EXPORT_CONS(generichash_blake2b_BYTES_MIN, 0),
     SALTY_EXPORT_CONS(generichash_blake2b_BYTES_MAX, 0),
