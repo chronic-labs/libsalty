@@ -1185,7 +1185,7 @@ END_OK_WITH(out);
 SALTY_CONST_INT64(pwhash_argon2id_PASSWD_MIN);
 // SALTY_CONST_INT64(pwhash_argon2id_PASSWD_MAX);
 SALTY_CONST_INT64(pwhash_argon2id_SALTBYTES);
-// SALTY_CONST_INT64(pwhash_argon2id_STRBYTES);
+SALTY_CONST_INT64(pwhash_argon2id_STRBYTES);
 // SALTY_CONST_INT64(pwhash_argon2id_OPSLIMIT_MIN);
 // SALTY_CONST_INT64(pwhash_argon2id_OPSLIMIT_MAX);
 // SALTY_CONST_INT64(pwhash_argon2id_MEMLIMIT_MIN);
@@ -1210,6 +1210,18 @@ SALTY_FUNC(pwhash, 6) DO
     SALTY_CALL(crypto_pwhash(
         hash.data, outlen, (const char *) password.data, password.size, salt.data, opslimit, memlimit, alg),
         hash);
+END_OK_WITH(hash);
+
+SALTY_FUNC(pwhash_str, 3) DO
+    SALTY_INPUT_BIN(0, password, crypto_pwhash_argon2id_PASSWD_MIN);
+    SALTY_INPUT_UINT64(1, opslimit);
+    SALTY_INPUT_UINT64(2, memlimit);
+
+    SALTY_OUTPUT_BIN(hash, crypto_pwhash_argon2id_STRBYTES);
+
+    SALTY_CALL(crypto_pwhash_str(
+                (char *) hash.data, (const char *) password.data, password.size, opslimit, memlimit),
+            hash);
 END_OK_WITH(hash);
 
 /**
@@ -2157,7 +2169,9 @@ salty_exports[] = {
     SALTY_EXPORT_CONS(pwhash_argon2id_SALTBYTES, 0),
     SALTY_EXPORT_CONS(pwhash_argon2id_OPSLIMIT_INTERACTIVE, 0),
     SALTY_EXPORT_CONS(pwhash_argon2id_MEMLIMIT_INTERACTIVE, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2id_STRBYTES, 0),
     SALTY_EXPORT_FUNC(pwhash, 6),
+    SALTY_EXPORT_FUNC(pwhash_str, 3),
 
     SALTY_EXPORT_CONS(generichash_blake2b_BYTES_MIN, 0),
     SALTY_EXPORT_CONS(generichash_blake2b_BYTES_MAX, 0),
