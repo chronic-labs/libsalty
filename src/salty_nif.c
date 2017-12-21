@@ -1239,6 +1239,26 @@ SALTY_FUNC(pwhash_str_alg, 4) DO
                hash);
 END_OK_WITH(hash);
 
+SALTY_FUNC(pwhash_str_verify, 2) DO
+    SALTY_INPUT_BIN(0, str, crypto_pwhash_argon2id_PASSWD_MIN);
+    SALTY_INPUT_BIN(1, password, crypto_pwhash_argon2id_PASSWD_MIN);
+
+    SALTY_OUTPUT_BIN(hash, crypto_pwhash_argon2i_STRBYTES);
+
+    SALTY_CALL(crypto_pwhash_str_verify(
+                   (char *) str.data, (const char *) password.data, password.size),
+               hash);
+END_OK_WITH(hash);
+
+SALTY_FUNC(pwhash_str_needs_rehash, 2) DO
+    SALTY_INPUT_UINT64(1, opslimit);
+    SALTY_INPUT_UINT64(2, memlimit);
+
+    SALTY_OUTPUT_BIN(hash, crypto_pwhash_argon2i_STRBYTES);
+
+    SALTY_CALL(crypto_pwhash_str_needs_rehash((char *) hash.data, opslimit, memlimit), hash);
+END_OK_WITH(hash);
+
 /**
  * GENERICHASH Blake2b
  */
@@ -2191,6 +2211,8 @@ salty_exports[] = {
     SALTY_EXPORT_FUNC(pwhash, 6),
     SALTY_EXPORT_FUNC(pwhash_str, 3),
     SALTY_EXPORT_FUNC(pwhash_str_alg, 4),
+    SALTY_EXPORT_FUNC(pwhash_str_verify, 2),
+    SALTY_EXPORT_FUNC(pwhash_str_needs_rehash, 2),
 
     SALTY_EXPORT_CONS(generichash_blake2b_BYTES_MIN, 0),
     SALTY_EXPORT_CONS(generichash_blake2b_BYTES_MAX, 0),
