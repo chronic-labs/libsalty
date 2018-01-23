@@ -125,6 +125,7 @@ defmodule Salty.Nif do
   def pwhash_argon2i_ALG_ARGON2I13, do: :erlang.exit(:salty_nif_not_loaded)
   def pwhash_argon2id_ALG_ARGON2ID13, do: :erlang.exit(:salty_nif_not_loaded)
   def pwhash_ALG_ARGON2ID13, do: :erlang.exit(:salty_nif_not_loaded)
+  def pwhash_ALG_ARGON2I13, do: :erlang.exit(:salty_nif_not_loaded)
   def pwhash(_,_,_,_,_,_), do: :erlang.exit(:salty_nif_not_loaded)
   def pwhash_str(_,_,_), do: :erlang.exit(:salty_nif_not_loaded)
   def pwhash_str_alg(_,_,_,_), do: :erlang.exit(:salty_nif_not_loaded)
