@@ -20,4 +20,8 @@ defmodule Salty.PwHashArgon2i do
   def passwd_max() do
     C.pwhash_argon2i_PASSWD_MAX()
   end
+
+  def saltbytes() do
+    C.pwhash_argon2i_SALTBYTES()
+  end
 end

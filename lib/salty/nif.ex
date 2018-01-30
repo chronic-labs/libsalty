@@ -122,6 +122,7 @@ defmodule Salty.Nif do
   def pwhash_argon2i_PASSWD_MIN, do: :erlang.exit(:salty_nif_not_loaded)
   def pwhash_argon2i_PASSWD_MAX, do: :erlang.exit(:salty_nif_not_loaded)
   def pwhash_argon2id_SALTBYTES, do: :erlang.exit(:salty_nif_not_loaded)
+  def pwhash_argon2i_SALTBYTES, do: :erlang.exit(:salty_nif_not_loaded)
   def pwhash_argon2id_STRBYTES, do: :erlang.exit(:salty_nif_not_loaded)
   def pwhash_argon2id_OPSLIMIT_INTERACTIVE, do: :erlang.exit(:salty_nif_not_loaded)
   def pwhash_argon2id_MEMLIMIT_INTERACTIVE, do: :erlang.exit(:salty_nif_not_loaded)
