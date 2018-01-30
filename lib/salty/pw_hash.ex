@@ -24,8 +24,6 @@ defmodule Salty.PwHash do
 
   @callback strbytes() :: non_neg_integer()
 
-  @callback strprefix() :: binary()
-
   @callback opslimit_min() :: non_neg_integer()
 
   @callback opslimit_max() :: non_neg_integer()

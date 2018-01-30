@@ -29,17 +29,13 @@ defmodule Salty.PwHashArgon2id do
     C.pwhash_argon2id_STRBYTES()
   end
 
-  # def strprefix() do
-  #   C.
-  # end
+  def opslimit_min() do
+    C.pwhash_argon2id_OPSLIMIT_MIN()
+  end
 
-  # def opslimit_min() do
-  #   C.
-  # end
-
-  # def opslimit_max() do
-  #   C.
-  # end
+  def opslimit_max() do
+    C.pwhash_argon2id_OPSLIMIT_MAX()
+  end
 
   # def memlimit_min() do
   #   C.

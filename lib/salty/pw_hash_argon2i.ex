@@ -28,4 +28,12 @@ defmodule Salty.PwHashArgon2i do
   def strbytes() do
     C.pwhash_argon2i_STRBYTES()
   end
+
+  def opslimit_min() do
+    C.pwhash_argon2i_OPSLIMIT_MIN()
+  end
+
+  def opslimit_max() do
+    C.pwhash_argon2i_OPSLIMIT_MAX()
+  end
 end
