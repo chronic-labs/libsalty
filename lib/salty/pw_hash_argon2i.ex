@@ -1,4 +1,4 @@
-defmodule Salty.PwHashArgon2i do
+defmodule Salty.PwHash.Argon2i do
   use Salty.PwHash
 
   def alg() do
@@ -69,7 +69,7 @@ defmodule Salty.PwHashArgon2i do
     C.pwhash_argon2i_MEMLIMIT_SENSITIVE()
   end
 
-  def pwhash(outlen, password, salt, opslimit, memlimit, alg) do
-    C.pwhash_argon2i(outlen, password, salt, opslimit, memlimit, alg())
+  def pwhash(outlen, password, salt, opslimit, memlimit, alg \\ alg()) do
+    C.pwhash_argon2i(outlen, password, salt, opslimit, memlimit, alg)
   end
 end

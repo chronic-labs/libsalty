@@ -1,4 +1,4 @@
-defmodule Salty.PwHashArgon2id do
+defmodule Salty.PwHash.Argon2id do
   use Salty.PwHash
 
   def alg() do
