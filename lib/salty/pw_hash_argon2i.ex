@@ -36,4 +36,36 @@ defmodule Salty.PwHashArgon2i do
   def opslimit_max() do
     C.pwhash_argon2i_OPSLIMIT_MAX()
   end
+
+  def memlimit_min() do
+    C.pwhash_argon2i_MEMLIMIT_MIN()
+  end
+
+  def memlimit_max() do
+    C.pwhash_argon2i_MEMLIMIT_MAX()
+  end
+
+  def opslimit_interactive() do
+    C.pwhash_argon2i_OPSLIMIT_INTERACTIVE()
+  end
+
+  def memlimit_interactive() do
+    C.pwhash_argon2i_MEMLIMIT_INTERACTIVE()
+  end
+
+  def opslimit_moderate() do
+    C.pwhash_argon2i_OPSLIMIT_MODERATE()
+  end
+
+  def memlimit_moderate() do
+    C.pwhash_argon2i_MEMLIMIT_MODERATE
+  end
+
+  def opslimit_sensitive() do
+    C.pwhash_argon2i_OPSLIMIT_SENSITIVE()
+  end
+
+  def memlimit_sensitive() do
+    C.pwhash_argon2i_MEMLIMIT_SENSITIVE()
+  end
 end
