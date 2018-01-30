@@ -1175,16 +1175,18 @@ SALTY_FUNC(core_hsalsa20, 3) DO
 END_OK_WITH(out);
 
 /**
- * PWHASH Argon2i
+ * PWHASH Argon2id
  */
-SALTY_CONST_INT64(pwhash_argon2i_ALG_ARGON2I13);
 SALTY_CONST_INT64(pwhash_argon2id_ALG_ARGON2ID13);
 SALTY_CONST_INT64(pwhash_ALG_ARGON2ID13);
-SALTY_CONST_INT64(pwhash_ALG_ARGON2I13);
-// SALTY_CONST_INT64(pwhash_argon2id_BYTES_MIN);
-// SALTY_CONST_INT64(pwhash_argon2id_BYTES_MAX);
+SALTY_CONST_INT64(pwhash_argon2id_BYTES_MIN);
+SALTY_CONST_INT64(pwhash_argon2id_BYTES_MAX);
+SALTY_CONST_INT64(pwhash_argon2i_BYTES_MIN);
+SALTY_CONST_INT64(pwhash_argon2i_BYTES_MAX);
 SALTY_CONST_INT64(pwhash_argon2id_PASSWD_MIN);
-// SALTY_CONST_INT64(pwhash_argon2id_PASSWD_MAX);
+SALTY_CONST_INT64(pwhash_argon2id_PASSWD_MAX);
+SALTY_CONST_INT64(pwhash_argon2i_PASSWD_MIN);
+SALTY_CONST_INT64(pwhash_argon2i_PASSWD_MAX);
 SALTY_CONST_INT64(pwhash_argon2id_SALTBYTES);
 SALTY_CONST_INT64(pwhash_argon2id_STRBYTES);
 // SALTY_CONST_INT64(pwhash_argon2id_OPSLIMIT_MIN);
@@ -1198,7 +1200,27 @@ SALTY_CONST_INT64(pwhash_argon2id_MEMLIMIT_INTERACTIVE);
 // SALTY_CONST_INT64(pwhash_argon2id_OPSLIMIT_SENSITIVE);
 // SALTY_CONST_INT64(pwhash_argon2id_MEMLIMIT_SENSITIVE);
 
-SALTY_FUNC(pwhash, 6) DO
+SALTY_FUNC(pwhash_argon2id, 6) DO
+    SALTY_INPUT_UINT64(0, outlen);
+    SALTY_INPUT_BIN(1, password, crypto_pwhash_argon2id_PASSWD_MIN);
+    SALTY_INPUT_BIN(2, salt, crypto_pwhash_argon2id_SALTBYTES);
+    SALTY_INPUT_UINT64(3, opslimit);
+    SALTY_INPUT_UINT64(4, memlimit);
+    SALTY_INPUT_UINT64(5, alg);
+
+    SALTY_OUTPUT_BIN(hash, outlen);
+
+    SALTY_CALL(crypto_pwhash(
+                   hash.data, outlen, (const char *) password.data, password.size, salt.data, opslimit, memlimit, alg),
+               hash);
+END_OK_WITH(hash);
+
+/**
+ * PWHASH Argon2i
+ */
+SALTY_CONST_INT64(pwhash_argon2i_ALG_ARGON2I13);
+SALTY_CONST_INT64(pwhash_ALG_ARGON2I13);
+SALTY_FUNC(pwhash_argon2i, 6) DO
     SALTY_INPUT_UINT64(0, outlen);
     SALTY_INPUT_BIN(1, password, crypto_pwhash_argon2id_PASSWD_MIN);
     SALTY_INPUT_BIN(2, salt, crypto_pwhash_argon2id_SALTBYTES);
@@ -2201,21 +2223,6 @@ salty_exports[] = {
     SALTY_EXPORT_FUNC(core_hchacha20, 3),
     SALTY_EXPORT_FUNC(core_hsalsa20, 3),
 
-    SALTY_EXPORT_CONS(pwhash_argon2id_PASSWD_MIN, 0),
-    SALTY_EXPORT_CONS(pwhash_argon2id_SALTBYTES, 0),
-    SALTY_EXPORT_CONS(pwhash_argon2id_OPSLIMIT_INTERACTIVE, 0),
-    SALTY_EXPORT_CONS(pwhash_argon2id_MEMLIMIT_INTERACTIVE, 0),
-    SALTY_EXPORT_CONS(pwhash_argon2id_STRBYTES, 0),
-    SALTY_EXPORT_CONS(pwhash_argon2i_ALG_ARGON2I13, 0),
-    SALTY_EXPORT_CONS(pwhash_argon2id_ALG_ARGON2ID13, 0),
-    SALTY_EXPORT_CONS(pwhash_ALG_ARGON2ID13, 0),
-    SALTY_EXPORT_CONS(pwhash_ALG_ARGON2I13, 0),
-    SALTY_EXPORT_FUNC(pwhash, 6),
-    SALTY_EXPORT_FUNC(pwhash_str, 3),
-    SALTY_EXPORT_FUNC(pwhash_str_alg, 4),
-    SALTY_EXPORT_FUNC(pwhash_str_verify, 2),
-    SALTY_EXPORT_FUNC(pwhash_str_needs_rehash, 2),
-
     SALTY_EXPORT_CONS(generichash_blake2b_BYTES_MIN, 0),
     SALTY_EXPORT_CONS(generichash_blake2b_BYTES_MAX, 0),
     SALTY_EXPORT_CONS(generichash_blake2b_BYTES, 0),
@@ -2270,6 +2277,29 @@ salty_exports[] = {
     SALTY_EXPORT_FUNC(onetimeauth_poly1305_update, 2),
     SALTY_EXPORT_FUNC(onetimeauth_poly1305_final, 1),
     SALTY_EXPORT_FUNC(onetimeauth_poly1305_final_verify, 2),
+
+    SALTY_EXPORT_CONS(pwhash_argon2id_PASSWD_MIN, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2id_PASSWD_MAX, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2i_PASSWD_MIN, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2i_PASSWD_MAX, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2id_SALTBYTES, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2id_OPSLIMIT_INTERACTIVE, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2id_MEMLIMIT_INTERACTIVE, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2id_STRBYTES, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2i_ALG_ARGON2I13, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2id_ALG_ARGON2ID13, 0),
+    SALTY_EXPORT_CONS(pwhash_ALG_ARGON2ID13, 0),
+    SALTY_EXPORT_CONS(pwhash_ALG_ARGON2I13, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2id_BYTES_MIN, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2id_BYTES_MAX, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2i_BYTES_MIN, 0),
+    SALTY_EXPORT_CONS(pwhash_argon2i_BYTES_MAX, 0),
+    SALTY_EXPORT_FUNC(pwhash_argon2id, 6),
+    SALTY_EXPORT_FUNC(pwhash_argon2i, 6),
+    SALTY_EXPORT_FUNC(pwhash_str, 3),
+    SALTY_EXPORT_FUNC(pwhash_str_alg, 4),
+    SALTY_EXPORT_FUNC(pwhash_str_verify, 2),
+    SALTY_EXPORT_FUNC(pwhash_str_needs_rehash, 2),
 
     SALTY_EXPORT_CONS(scalarmult_curve25519_BYTES, 0),
     SALTY_EXPORT_CONS(scalarmult_curve25519_SCALARBYTES, 0),
