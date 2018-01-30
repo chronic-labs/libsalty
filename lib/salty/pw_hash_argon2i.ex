@@ -24,4 +24,8 @@ defmodule Salty.PwHashArgon2i do
   def saltbytes() do
     C.pwhash_argon2i_SALTBYTES()
   end
+
+  def strbytes() do
+    C.pwhash_argon2i_STRBYTES()
+  end
 end

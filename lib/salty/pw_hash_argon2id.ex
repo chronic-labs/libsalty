@@ -25,9 +25,9 @@ defmodule Salty.PwHashArgon2id do
     C.pwhash_argon2id_SALTBYTES()
   end
 
-  # def strbytes() do
-  #   C.
-  # end
+  def strbytes() do
+    C.pwhash_argon2id_STRBYTES()
+  end
 
   # def strprefix() do
   #   C.
