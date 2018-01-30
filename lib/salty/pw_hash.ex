@@ -44,9 +44,9 @@ defmodule Salty.PwHash do
 
   @callback memlimit_sensitive() :: non_neg_integer()
 
-  @callback pwhash(non_neg_integer(), binary(), binary(), non_neg_integer(), non_neg_integer(),non_neg_integer()) :: {:ok, binary()} | {:error, atom()}
+  @callback pwhash(non_neg_integer(), binary(), binary(), non_neg_integer(), non_neg_integer(), non_neg_integer()) :: {:ok, binary()} | {:error, atom()}
 
-  @callback pwhash_str() :: {:ok, binary()} | {:error, atom()}
+  # @callback pwhash_str() :: {:ok, binary()} | {:error, atom()}
 
   # @callback pwhash_str()
 

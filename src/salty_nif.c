@@ -379,6 +379,26 @@ crypto_onetimeauth_poly1305_final_verify(crypto_onetimeauth_poly1305_state *stat
     return crypto_verify_16(h, correct);
 }
 
+int crypto_pwhash_argon2i(unsigned char * const out,
+                          unsigned long long outlen,
+                          const char * const passwd,
+                          unsigned long long passwdlen,
+                          const unsigned char * const salt,
+                          unsigned long long opslimit, size_t memlimit,
+                          int alg) {
+  return crypto_pwhash(out, outlen, passwd, passwdlen, salt, opslimit, memlimit, alg);
+}
+
+int crypto_pwhash_argon2id(unsigned char * const out,
+                           unsigned long long outlen,
+                           const char * const passwd,
+                           unsigned long long passwdlen,
+                           const unsigned char * const salt,
+                           unsigned long long opslimit, size_t memlimit,
+                           int alg) {
+  return crypto_pwhash(out, outlen, passwd, passwdlen, salt, opslimit, memlimit, alg);
+}
+
 int
 crypto_secretbox_xsalsa20poly1305_easy(unsigned char       *c,
                                        const unsigned char *m,
@@ -1220,7 +1240,7 @@ SALTY_FUNC(pwhash_argon2id, 6) DO
 
     SALTY_OUTPUT_BIN(hash, outlen);
 
-    SALTY_CALL(crypto_pwhash(
+    SALTY_CALL(crypto_pwhash_argon2id(
                    hash.data, outlen, (const char *) password.data, password.size, salt.data, opslimit, memlimit, alg),
                hash);
 END_OK_WITH(hash);
@@ -1230,15 +1250,15 @@ END_OK_WITH(hash);
  */
 SALTY_FUNC(pwhash_argon2i, 6) DO
     SALTY_INPUT_UINT64(0, outlen);
-    SALTY_INPUT_BIN(1, password, crypto_pwhash_argon2id_PASSWD_MIN);
-    SALTY_INPUT_BIN(2, salt, crypto_pwhash_argon2id_SALTBYTES);
+    SALTY_INPUT_BIN(1, password, crypto_pwhash_argon2i_PASSWD_MIN);
+    SALTY_INPUT_BIN(2, salt, crypto_pwhash_argon2i_SALTBYTES);
     SALTY_INPUT_UINT64(3, opslimit);
     SALTY_INPUT_UINT64(4, memlimit);
     SALTY_INPUT_UINT64(5, alg);
 
     SALTY_OUTPUT_BIN(hash, outlen);
 
-    SALTY_CALL(crypto_pwhash(
+    SALTY_CALL(crypto_pwhash_argon2i(
                    hash.data, outlen, (const char *) password.data, password.size, salt.data, opslimit, memlimit, alg),
                hash);
 END_OK_WITH(hash);
